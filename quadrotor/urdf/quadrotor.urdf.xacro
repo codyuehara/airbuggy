@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="quadrotor">
+	<!-- base airframe -->
+	<!--
+  <xacro:include filename="quadrotor_base.urdf.xacro" />
+	-->
+
+  <xacro:property name="pi" value="3.1415926535897931"/>
+  <xacro:property name="mass" value="0.5" />
+  <xacro:property name="ixx" value="0.00264" />
+  <xacro:property name="iyy" value="0.00264" />
+  <xacro:property name="izz" value="0.00496" />
+
+	
+  <link name="base_link">
+    <inertial>
+      <mass value="${mass}"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="${ixx}" ixy="0.0" ixz="0.0" iyy="${iyy}" iyz="0.0" izz="${izz}" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	      <mesh filename="file://$(find quadrotor)/meshes/quadrotor.dae"/>
+      </geometry>
+    </visual>
+    
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+	      <mesh filename="file://$(find quadrotor)/meshes/quadrotor.stl"/>
+      </geometry>
+    </collision>
+
+  </link>
+	 
+  <gazebo>
+    <plugin name="quadrotor_model" filename="libquadrotor_plugin.so">
+    </plugin>
+  </gazebo>
+
+</robot>
