@@ -3,6 +3,7 @@
 	<!-- base airframe -->
 	<!--
   <xacro:include filename="quadrotor_base.urdf.xacro" />
+  <xacro:include filename="depth_camera.xacro" />
 	-->
 
   <xacro:property name="pi" value="3.1415926535897931"/>
@@ -34,6 +35,7 @@
     </collision>
 
   </link>
+  <xacro:include filename="camera.xacro" />
 	 
   <gazebo>
     <plugin name="quadrotor_model" filename="libquadrotor_plugin.so">
