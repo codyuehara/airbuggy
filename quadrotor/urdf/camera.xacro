@@ -14,7 +14,7 @@
   <link name="camera_link">
     <visual>
       <geometry>
-        <box radius="0.010 0.03 0.03"/>
+        <box size="0.010 0.03 0.03"/>
       </geometry>
       <material name="orange"/>
     </visual>

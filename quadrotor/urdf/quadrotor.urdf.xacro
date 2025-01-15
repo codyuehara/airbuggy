@@ -39,6 +39,7 @@
 	 
   <gazebo>
     <plugin name="quadrotor_model" filename="libquadrotor_plugin.so">
+      <max_velocity>0.3</max_velocity>
     </plugin>
   </gazebo>
 
