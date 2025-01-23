@@ -1,22 +1,20 @@
 #include <gazebo/physics/Model.hh>
-#include <gazebo/physics/Joint.hh>
+#include <gazebo/physics/Link.hh>
 #include <quadrotor/quadrotor_plugin.hpp>
 #include <gazebo_ros/node.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/float32_multi_array.hpp>
+#include <gazebo/physics/physics.hh>
 
 namespace gazebo {
 
 class QuadrotorPluginPrivate
 {
 public:
-    gazebo::event::ConnectionPtr update_connection_;
-    gazebo_ros::Node::SharedPtr ros_node_;
-    gazebo::physics::JointPtr belt_joint_;
+    event::ConnectionPtr update_connection_;
+    rclcpp::Node::SharedPtr ros_node_;
+    physics::ModelPtr model;
 
-    double limit_;
-
-    double max_velocity_;
-    
     void OnUpdate();
 
 };
@@ -32,20 +30,11 @@ QuadrotorPlugin::~QuadrotorPlugin()
 
 void QuadrotorPlugin::Load(gazebo::physics::ModelPtr model, sdf::ElementPtr sdf)
 {
+    impl_->model = model;
+
     impl_->ros_node_ = gazebo_ros::Node::Get(sdf);
     RCLCPP_INFO_ONCE(impl_->ros_node_->get_logger(), "CODY");
-
-//    impl_->belt_joint_ = model->GetJoint("belt_joint");
-
-    //if (!impl_belt_joint_) {
-     //   RCLCPP_ERROR(impl_->ros_node_->get_logger(), "Joint not found, unable to start plugin");
-//	return;
- //   }
-
-    impl_->max_velocity_ = sdf->GetElement("max_velocity")->Get<double>();
-
-    //model->GetLink("base_link")->SetLinearVel({0, 1, 0});
-
+    //this->node = std::make_shared<rclcpp::Node>("quadrotor_plugin");
     impl_->update_connection_ = gazebo::event::Events::ConnectWorldUpdateBegin(std::bind(&QuadrotorPluginPrivate::OnUpdate, impl_.get()));
 }
 
@@ -61,8 +50,7 @@ void QuadrotorPluginPrivate::OnUpdate()
     // integrate with runge kutta 4 to get:
     // states = [x, y, z, v_x, v_y, v_z, p, q, r, w_x, w_y, w_z]
     //
-    // model->GetLink("link")->SetLinearVel({v_x, v_y, v_x});
-    // model->GetLink("link")->SetAngularVel({w_x, w_y, w_x});
+    model->GetLink("base_link")->AddRelativeForce(ignition::math::Vector3d(1, 0, 5));
 }
 
 GZ_REGISTER_MODEL_PLUGIN(QuadrotorPlugin)

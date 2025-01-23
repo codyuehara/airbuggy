@@ -10,14 +10,14 @@ namespace gazebo
 {
 class QuadrotorPluginPrivate;
 
-class QuadrotorPlugin: public gazebo::ModelPlugin
+class QuadrotorPlugin: public ModelPlugin
 {
 public:
     QuadrotorPlugin();
 
     virtual ~QuadrotorPlugin();
 
-    void Load(gazebo::physics::ModelPtr model, sdf::ElementPtr sdf) override;
+    void Load(physics::ModelPtr model, sdf::ElementPtr sdf) override;
 
 private:
     std::unique_ptr<QuadrotorPluginPrivate> impl_;

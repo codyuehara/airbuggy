@@ -50,12 +50,9 @@ def generate_launch_description():
     )
 
 
-    
-
     # Launch Description 
     return LaunchDescription([
         gzserver_cmd,
         gzclient_cmd,
         spawn_robot_world
-        
     ])

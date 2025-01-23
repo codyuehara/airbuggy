@@ -22,10 +22,17 @@ find_package(gazebo REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(xacro REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(robot_state_publisher REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
+
+include_directories(
+    ${GAZEBO_INCLUDE_DIRS}
+    ${std_msgs_INCLUDE_DIRS}
+    ${rclcpp_INCLUDE_DIRS}
+)
 
 install(DIRECTORY
     urdf
@@ -47,10 +54,18 @@ add_library(quadrotor_plugin SHARED
     src/quadrotor_plugin.cpp
 )
 
+
 target_include_directories(quadrotor_plugin PUBLIC include)
 ament_target_dependencies(quadrotor_plugin
     "gazebo_ros"
 )
+
+target_link_libraries(quadrotor_plugin
+    ${GAZEBO_LIBRARIES}
+    ${std_msgs_LIBRARIES}
+    ${rclcpp_LIBRARIES}
+)
+
 ament_export_libraries(quadrotor_plugin)
 
 install(TARGETS
@@ -70,7 +85,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_package()
-
 install(DIRECTORY include/
     DESTINATION include)
+
+ament_package()
